@@ -42,6 +42,18 @@ components:
       format: int32
       description: "Some item flag in numeric form (1, 2, 4, 8)" # TODO: Enum type?
 
+    Score:
+      type: integer
+      format: int64
+      description: "Some score value ('benis')"
+    UserMark:
+      type: integer
+      format: int32
+      description: "The user mark"
+    UserName:
+      type: string
+      description: "The user mark"
+
     ResponseBase:
       type: object
       required:
@@ -54,13 +66,13 @@ components:
           $ref: "#/components/schemas/Timestamp"
         cache:
           type: string
-          description: "Cache key of the response"
+          description: "Cache key of the response."
         rt:
           type: integer
-          description: "Response duration"
+          description: "Response duration."
         qc:
           type: integer
-          description: "Number of database queries (query count)"
+          description: "Number of database queries (query count)."
 
     CommentBase:
       type: object
@@ -112,7 +124,7 @@ components:
           userId:
             $ref: "#/components/schemas/UserId"
           mark:
-            type: number
+            $ref: "#/components/schemas/UserMark"
             description: "Current user mark of the user that posted that comment"
           name:
             type: string
@@ -131,6 +143,11 @@ components:
 
     ProfileBadge:
       type: object
+      required:
+      - link
+      - image
+      - description
+      - created
       properties:
         link:
           type: string
@@ -140,6 +157,170 @@ components:
           type: string
         created:
           $ref: "#/components/schemas/Timestamp"
+
+    CollectionItem:
+      type: object
+      required:
+      - id
+      - flags
+      - thumb
+      properties:
+        id:
+          $ref: "#/components/schemas/ItemId"
+        flags:
+          $ref: "#/components/schemas/ItemFlag"
+        thumb:
+          type: string
+
+    ProfileCollection:
+      type: object
+      required:
+      - name
+      - keyword
+      - isPublic
+      - isDefault
+      - items
+      - curators
+      properties:
+        id:
+          $ref: "#/components/schemas/CollectionId"
+        name:
+          type: string
+        keyword:
+          type: string
+        isPublic:
+          type: number
+        isDefault:
+          type: number
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CollectionItem"
+        curators:
+          type: array
+          items:
+            type: object # TODO
+
+    UserInfo:
+      type: object
+      required:
+      - id
+      - name
+      - registered
+      - score
+      - up
+      - down
+      - mark
+      - banned
+      - commentDelete
+      - itemDelete
+      - inactive
+      properties:
+        id:
+          $ref: "#/components/schemas/UserId"
+        name:
+          $ref: "#/components/schemas/UserName"
+        registered:
+          $ref: "#/components/schemas/Timestamp"
+        score:
+          $ref: "#/components/schemas/Score"
+        up:
+          $ref: "#/components/schemas/Score"
+        down:
+          $ref: "#/components/schemas/Score"
+        mark:
+          $ref: "#/components/schemas/UserMark"
+        banned:
+          $ref: "#/components/schemas/Timestamp"
+        commentDelete:
+          type: integer
+          format: int32
+        itemDelete:
+          type: integer
+          format: int32
+        inactive:
+          type: integer
+          format: int64
+
+    ProfileResponse:
+      allOf:
+      - $ref: "#/components/schemas/ResponseBase"
+      - type: object
+        required:
+        - user
+        - comments
+        - commentCount
+        - likesArePublic
+        - comments_likes
+        - commentLikesCount
+        - uploads
+        - uploadCount
+        - collections
+        - curatorCollections
+        - collectedCount
+        - likeCount
+        - tagCount
+        - badges
+        - followCount
+        - appLinks
+        - following
+        - subscribed
+        - blocked
+        properties:
+          user:
+            $ref: "#/components/schemas/UserInfo"
+          comments:
+            type: array
+            items:
+              $ref: "#/components/schemas/ProfileComment"
+          commentCount:
+            type: integer
+          likesArePublic:
+            type: boolean
+          comments_likes:
+            type: array
+            items:
+              $ref: "#/components/schemas/LikedProfileComment"
+          commentLikesCount:
+            type: number
+          uploads:
+            $ref: "#/components/schemas/ProfileUpload"
+          uploadCount:
+            type: integer
+          collections:
+            type: array
+            items:
+              $ref: "#/components/schemas/ProfileCollection"
+          curatorCollections:
+            type: array
+            items:
+              type: object
+          collectedCount:
+            type: integer
+            format: int64
+          likeCount:
+            type: integer
+            format: int64
+          tagCount:
+            type: integer
+            format: int64
+          badges:
+            type: array
+            items:
+              $ref: "#/components/schemas/ProfileBadge"
+          followCount:
+            type: integer
+            format: int64
+          appLinks:
+            type: array
+            items:
+              type: object
+          following:
+            type: boolean
+          subscribed:
+            type: boolean
+          blocked:
+            type: boolean
 
 
 paths:
@@ -505,120 +686,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                - $ref: "#/components/schemas/ResponseBase"
-                - type: object
-                  properties:
-                    user:
-                      type: object
-                      properties:
-                        id:
-                          type: number
-                        name:
-                          type: string
-                        registered:
-                          type: number
-                        score:
-                          type: integer
-                          format: int64
-                        up:
-                          type: integer
-                          format: int64
-                        down:
-                          type: integer
-                          format: int64
-                        mark:
-                          type: number
-                        banned:
-                          type: integer
-                          format: int64
-                        commentDelete:
-                          type: integer
-                          format: int32
-                        itemDelete:
-                          type: integer
-                          format: int32
-                        inactive:
-                          type: integer
-                          format: int64
-                    comments:
-                      type: array
-                      items:
-                        $ref: "#/components/schemas/ProfileComment"
-                    commentCount:
-                      type: integer
-                    likesArePublic:
-                      type: boolean
-                    comments_likes:
-                      type: array
-                      items:
-                        $ref: "#/components/schemas/LikedProfileComment"
-                    commentLikesCount:
-                      type: number
-                    uploads:
-                      $ref: "#/components/schemas/ProfileUpload"
-                    uploadCount:
-                      type: integer
-                    collections:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            $ref: "#/components/schemas/CollectionId"
-                          name:
-                            type: string
-                          keyword:
-                            type: string
-                          isPublic:
-                            type: number
-                          isDefault:
-                            type: number
-                          items:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                id:
-                                  $ref: "#/components/schemas/ItemId"
-                                thumb:
-                                  type: string
-                                flags:
-                                  $ref: "#/components/schemas/ItemFlag"
-                          curators:
-                            type: array
-                            items:
-                              type: object
-                    curatorCollections:
-                      type: array
-                      items:
-                        type: object
-                    collectedCount:
-                      type: integer
-                      format: int64
-                    likeCount:
-                      type: integer
-                      format: int64
-                    tagCount:
-                      type: integer
-                      format: int64
-                    badges:
-                      type: array
-                      items:
-                        $ref: "#/components/schemas/ProfileBadge"
-                    followCount:
-                      type: integer
-                      format: int64
-                    appLinks:
-                      type: array
-                      items:
-                        type: object
-                    following:
-                      type: boolean
-                    subscribed:
-                      type: boolean
-                    blocked:
-                      type: boolean
+                $ref: "#/components/schemas/ProfileResponse"
 
   /profile/follow:
     post:
