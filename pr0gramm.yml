@@ -363,6 +363,38 @@ components:
           score:
             $ref: "#/components/schemas/Score"
 
+    UserIdentifierResponse:
+      allOf:
+      - $ref: "#/components/schemas/ResponseBase"
+      - type: object
+        required:
+        - identifier
+        properties:
+          identifier:
+            type: string
+            description: Some string. No guarantee on format.
+
+    UserNameResponse:
+      allOf:
+      - $ref: "#/components/schemas/ResponseBase"
+      - type: object
+        required:
+        - name
+        properties:
+          name:
+            $ref: "#/components/schemas/UserName"
+
+    UserScoreResponse:
+      allOf:
+      - $ref: "#/components/schemas/ResponseBase"
+      - type: object
+        required:
+        - score
+        properties:
+          score:
+            $ref: "#/components/schemas/Score"
+
+
 paths:
 #region Login/Auth/Registration/Reset
 
@@ -465,15 +497,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                - $ref: "#/components/schemas/ResponseBase"
-                - type: object
-                  required:
-                  - identifier
-                  properties:
-                    identifier:
-                      type: string
-                      description: Some string. No guarantee on format.
+                $ref: "#/components/schemas/UserIdentifierResponse"
 
   /user/name:
     get:
@@ -487,14 +511,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                - $ref: "#/components/schemas/ResponseBase"
-                - type: object
-                  required:
-                  - name
-                  properties:
-                    name:
-                      $ref: "#/components/schemas/UserName"
+                $ref: "#/components/schemas/UserNameResponse"
 
   /user/score:
     get:
@@ -508,14 +525,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                - $ref: "#/components/schemas/ResponseBase"
-                - type: object
-                  required:
-                  - score
-                  properties:
-                    score:
-                      $ref: "#/components/schemas/Score"
+                $ref: "#/components/schemas/UserScoreResponse"
 
   /user/handoverrequest:
     post:
