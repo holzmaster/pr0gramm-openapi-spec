@@ -16,6 +16,32 @@ servers:
 
 components:
   schemas:
+    Timestamp:
+      type: integer
+      format: int64
+      description: "Unix timestamp, in seconds."
+    ItemId:
+      type: integer
+      format: int64
+      description: "Numeric ID of an item/upload (auto-incremented via database)."
+    CommentId:
+      type: integer
+      format: int64
+      description: "Numeric ID of a comment (auto-incremented via database)."
+    UserId:
+      type: integer
+      format: int64
+      description: "Numeric ID of a user (auto-incremented via database)."
+    CollectionId:
+      type: integer
+      format: int64
+      description: "Numeric ID of a collection (auto-incremented via database)."
+
+    ItemFlag:
+      type: integer
+      format: int32
+      description: "Some item flag in numeric form (1, 2, 4, 8)" # TODO: Enum type?
+
     ResponseBase:
       type: object
       required:
@@ -25,14 +51,16 @@ components:
       - qt
       properties:
         ts:
-          type: integer
-          format: int64
+          $ref: "#/components/schemas/Timestamp"
         cache:
           type: string
+          description: "Cache key of the response"
         rt:
           type: integer
-        qt:
+          description: "Response duration"
+        qc:
           type: integer
+          description: "Number of database queries (query count)"
 
     CommentBase:
       type: object
@@ -44,8 +72,7 @@ components:
       - content
       properties:
         id:
-          type: integer
-          format: int64
+          $ref: "#/components/schemas/CommentId"
         up:
           type: integer
           format: int64
@@ -53,8 +80,7 @@ components:
           type: integer
           format: int64
         created:
-          type: integer
-          format: int64
+          $ref: "#/components/schemas/Timestamp"
         content:
           type: string
 
@@ -67,8 +93,7 @@ components:
         - thumb
         properties:
           itemId:
-            type: integer
-            format: int64
+            $ref: "#/components/schemas/ItemId"
           thumb:
             type: string
 
@@ -83,11 +108,9 @@ components:
         - name
         properties:
           ccreated:
-            type: number
+            $ref: "#/components/schemas/Timestamp"
           userId:
-            type: integer
-            format: int64
-            description: "Numeric ID of the user that posted that comment"
+            $ref: "#/components/schemas/UserId"
           mark:
             type: number
             description: "Current user mark of the user that posted that comment"
@@ -102,8 +125,7 @@ components:
       - thumb
       properties:
         id:
-          type: integer
-          format: int64
+          $ref: "#/components/schemas/ItemId"
         thumb:
           type: string
 
@@ -117,8 +139,7 @@ components:
         description:
           type: string
         created:
-          type: integer
-          format: int64
+          $ref: "#/components/schemas/Timestamp"
 
 
 paths:
@@ -544,8 +565,7 @@ paths:
                         type: object
                         properties:
                           id:
-                            type: integer
-                            format: int64
+                            $ref: "#/components/schemas/CollectionId"
                           name:
                             type: string
                           keyword:
@@ -560,11 +580,11 @@ paths:
                               type: object
                               properties:
                                 id:
-                                  type: number
+                                  $ref: "#/components/schemas/ItemId"
                                 thumb:
                                   type: string
                                 flags:
-                                  type: number
+                                  $ref: "#/components/schemas/ItemFlag"
                           curators:
                             type: array
                             items:
