@@ -322,6 +322,46 @@ components:
           blocked:
             type: boolean
 
+    InboxState:
+      type:
+        object
+      required:
+      - comments
+      - mentions
+      - messages
+      - notifications
+      - follows
+      properties:
+        comments:
+          type: integer
+        mentions:
+          type: integer
+        messages:
+          type: integer
+        notifications:
+          type: integer
+        follows:
+          type: integer
+
+    SyncResponse:
+      allOf:
+      - $ref: "#/components/schemas/ResponseBase"
+      - type: object
+        required:
+        - inbox
+        - log
+        - logLength
+        - score
+        properties:
+          inbox:
+            $ref: "#/components/schemas/InboxState"
+          log:
+            type: string
+          logLength:
+            type: number
+            format: int64
+          score:
+            $ref: "#/components/schemas/Score"
 
 paths:
 #region Login/Auth/Registration/Reset
@@ -454,7 +494,7 @@ paths:
                   - name
                   properties:
                     name:
-                      type: string
+                      $ref: "#/components/schemas/UserName"
 
   /user/score:
     get:
@@ -475,8 +515,7 @@ paths:
                   - score
                   properties:
                     score:
-                      type: integer
-                      format: int64
+                      $ref: "#/components/schemas/Score"
 
   /user/handoverrequest:
     post:
@@ -485,6 +524,23 @@ paths:
   /user/sync:
     get:
       summary: "TODO"
+      operationId: fetchSyncLog
+      tags:
+      - user
+      parameters:
+      - in: query
+        name: offset
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncResponse"
 
   /user/followlist:
     get:
