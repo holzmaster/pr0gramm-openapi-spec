@@ -1,0 +1,1071 @@
+$schema: "https://spec.openapis.org/oas/3.1/schema/2021-05-20"
+
+openapi: 3.1.0
+info:
+  title: "pr0gramm.com"
+  description: |
+    OpenAPI spec for pr0gramm.com
+  version: 1.0.0
+  license:
+    identifier: AGPL-3.0
+    name: "GNU Affero General Public License v3.0"
+    url: https://github.com/holzmaster/blob/master/LICENSE
+servers:
+- url: https://pr0gramm.com/api
+  description: Production server (uses live data)
+
+components:
+  schemas:
+    ResponseBase:
+      type: object
+      required:
+      - ts
+      - cache
+      - rt
+      - qt
+      properties:
+        ts:
+          type: integer
+          format: int64
+        cache:
+          type: string
+        rt:
+          type: integer
+        qt:
+          type: integer
+
+paths:
+#region Login/Auth/Registration/Reset
+
+  /user/login:
+    post:
+      summary: "TODO"
+
+  /user/logout:
+    post:
+      summary: "TODO"
+
+  /user/captcha:
+    get:
+      summary: "TODO"
+
+  /user/auth:
+    post:
+      summary: "TODO"
+
+  /user/sendpasswordresetmail:
+    post:
+      summary: "TODO"
+
+  /user/validate:
+    post:
+      summary: "TODO"
+
+  /user/resendValidationMail:
+    post:
+      summary: "TODO"
+
+  /user/resetpassword:
+    post:
+      summary: "TODO"
+
+  /user/joinwithinvite:
+    post:
+      summary: "TODO"
+
+  /user/loadpaymenttoken:
+    post:
+      summary: "TODO"
+
+  /user/redeemtoken:
+    post:
+      summary: "TODO"
+
+  /user/joinwithtoken:
+    post:
+      summary: "TODO"
+
+  /user/changeemail:
+    post:
+      summary: "TODO"
+
+  /user/requestemailchange:
+    post:
+      summary: "TODO"
+
+  /user/sitesettings:
+    post:
+      summary: "TODO"
+
+  /user/changesecurity:
+    post:
+      summary: "TODO"
+
+  /user/changeName:
+    post:
+      summary: "TODO"
+
+  /user/selfBan:
+    post:
+      summary: "TODO"
+
+  /user/changepassword:
+    post:
+      summary: "TODO"
+
+  /user/invite:
+    post:
+      summary: "TODO"
+
+  /user/redeemshopcoupon:
+    post:
+      summary: "TODO"
+
+#endregion
+#region /user
+
+  /user/identifier:
+    get:
+      summary: Gets the globally unique identifier of the logged in user.
+      operationId: getUserIdentifier
+      tags:
+      - user
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: "#/components/schemas/ResponseBase"
+                - type: object
+                  required:
+                  - identifier
+                  properties:
+                    identifier:
+                      type: string
+                      description: Some string. No guarantee on format.
+
+  /user/name:
+    get:
+      summary: Gets the user name of the logged in user.
+      operationId: getUserName
+      tags:
+      - user
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: "#/components/schemas/ResponseBase"
+                - type: object
+                  required:
+                  - name
+                  properties:
+                    name:
+                      type: string
+
+  /user/score:
+    get:
+      summary: Gets the score ("benis") of the logged in user.
+      operationId: getUserScore
+      tags:
+      - user
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: "#/components/schemas/ResponseBase"
+                - type: object
+                  required:
+                  - score
+                  properties:
+                    score:
+                      type: integer
+                      format: int64
+
+  /user/handoverrequest:
+    post:
+      summary: "TODO"
+
+  /user/sync:
+    get:
+      summary: "TODO"
+
+  /user/followlist:
+    get:
+      summary: "TODO"
+
+  /user/blocklist:
+    get:
+      summary: "TODO"
+
+  /user/validateInfo:
+    get:
+      summary: "TODO"
+
+  /user/loadinvite:
+    get:
+      summary: "TODO"
+
+  /user/authclientinfo:
+    get:
+      summary: "TODO"
+
+  /user/info:
+    get:
+      summary: "TODO"
+
+  /user/detachSelf:
+    get:
+      summary: "TODO"
+
+  /user/detachInvite:
+    get:
+      summary: "TODO"
+
+#endregion
+#region /discord
+
+  /discord/auth:
+    post:
+      # operationId: TODO
+      tags:
+      - discord
+      description: "TODO"
+
+  /discord/user:
+    get:
+      # operationId: TODO
+      tags:
+      - discord
+      description: "TODO"
+
+  /discord/revoke:
+    get:
+      # operationId: TODO
+      tags:
+      - discord
+      description: "TODO: This might be a design fail (sending a link would revoke discord auth)"
+
+#endregion
+#region /faq
+
+  /faq/changelog:
+    get:
+      description: "TODO"
+
+  /faq/rules:
+    get:
+      description: "TODO"
+
+  /faq/all:
+    get:
+      description: "TODO"
+
+  /faq/get:
+    get:
+      description: "TODO"
+
+  /faq/search:
+    get:
+      description: "TODO"
+
+#endregion
+#region /pr0mium
+
+  /pr0mium/getProducts:
+    get:
+      description: "TODO"
+
+#endregion
+#region /items
+
+  /items/upload:
+    post:
+      description: "TODO"
+
+  /items/queue:
+    get:
+      summary: Gets the uploads left of the current user.
+      operationId: getQueue
+      tags:
+      - items
+      parameters:
+      - in: query
+        name: id
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: "#/components/schemas/ResponseBase"
+                - type: object
+                  required:
+                  - status
+                  - position
+                  - item
+                  properties:
+                    status:
+                      type: string # TODO: Enum
+                    position:
+                      type: integer
+                    item:
+                      type: object
+                      required:
+                      - id
+                      properties:
+                        id:
+                          type: integer
+
+  /items/ratelimited:
+    get:
+      summary: Gets the uploads left of the current user.
+      operationId: getRateLimit
+      tags:
+      - items
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: "#/components/schemas/ResponseBase"
+                - type: object
+                  required:
+                  - left
+                  properties:
+                    left:
+                      type: integer
+                      format: int32
+
+  /items/scheduled:
+    get:
+      description: "TODO"
+
+  /items/removeScheduled:
+    post:
+      description: "TODO"
+
+  /items/post:
+    post:
+      description: "TODO"
+
+  /items/delete:
+    post:
+      description: "TODO"
+
+  /items/vote:
+    post:
+      description: "TODO"
+
+#endregion
+#region /profile
+
+  /profile/info:
+    get:
+      operationId: getProfileInfo
+      tags:
+      - profile
+      description: "TODO"
+      parameters:
+      - in: query
+        name: name
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: flags
+        required: true
+        schema:
+          type: integer # TODO: Enum
+          format: int32
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: "#/components/schemas/ResponseBase"
+                - type: object
+                  properties:
+                    user:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        name:
+                          type: string
+                        registered:
+                          type: number
+                        score:
+                          type: integer
+                          format: int64
+                        up:
+                          type: integer
+                          format: int64
+                        down:
+                          type: integer
+                          format: int64
+                        mark:
+                          type: number
+                        banned:
+                          type: integer
+                          format: int64
+                        commentDelete:
+                          type: integer
+                          format: int32
+                        itemDelete:
+                          type: integer
+                          format: int32
+                        inactive:
+                          type: integer
+                          format: int64
+                    comments:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                          up:
+                            type: integer
+                            format: int64
+                          down:
+                            type: integer
+                            format: int64
+                          content:
+                            type: string
+                          created:
+                            type: number
+                          itemId:
+                            type: integer
+                            format: int64
+                          thumb:
+                            type: string
+                    commentCount:
+                      type: number
+                    likesArePublic:
+                      type: boolean
+                    comments_likes:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            format: int64
+                          up:
+                            type: integer
+                            format: int64
+                          down:
+                            type: integer
+                            format: int64
+                          content:
+                            type: string
+                          created:
+                            type: number
+                          ccreated:
+                            type: number
+                          itemId:
+                            type: integer
+                            format: int64
+                          thumb:
+                            type: string
+                          userId:
+                            type: integer
+                            format: int64
+                          mark:
+                            type: number
+                          name:
+                            type: string
+                    commentLikesCount:
+                      type: number
+                    uploads:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            format: int64
+                          thumb:
+                            type: string
+                    uploadCount:
+                      type: number
+                    collections:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            format: int64
+                          name:
+                            type: string
+                          keyword:
+                            type: string
+                          isPublic:
+                            type: number
+                          isDefault:
+                            type: number
+                          items:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                thumb:
+                                  type: string
+                                flags:
+                                  type: number
+                          curators:
+                            type: array
+                            items:
+                              type: object
+                    curatorCollections:
+                      type: array
+                      items:
+                        type: object
+                    collectedCount:
+                      type: integer
+                      format: int64
+                    likeCount:
+                      type: integer
+                      format: int64
+                    tagCount:
+                      type: integer
+                      format: int64
+                    badges:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          link:
+                            type: string
+                          image:
+                            type: string
+                          description:
+                            type: string
+                          created:
+                            type: number
+                    followCount:
+                      type: integer
+                      format: int64
+                    appLinks:
+                      type: array
+                      items:
+                        type: object
+                    following:
+                      type: boolean
+                    subscribed:
+                      type: boolean
+                    blocked:
+                      type: boolean
+
+  /profile/follow:
+    post:
+      operationId: follow
+      tags:
+      - profile
+      description: "TODO"
+
+  /profile/unfollow:
+    post:
+      operationId: unfollow
+      tags:
+      - profile
+      description: "TODO"
+
+  /profile/subscribe:
+    post:
+      operationId: subscribe
+      tags:
+      - profile
+      description: "TODO"
+
+  /profile/unsubscribe:
+    post:
+      operationId: unsubscribe
+      tags:
+      - profile
+      description: "TODO"
+
+  /profile/block:
+    post:
+      operationId: block
+      tags:
+      - profile
+      description: "TODO"
+
+  /profile/unblock:
+    post:
+      operationId: unblock
+      tags:
+      - profile
+      description: "TODO"
+
+  /profile/suggest:
+    get:
+      operationId: getNameSuggestion
+      tags:
+      - profile
+      description: "TODO"
+      parameters:
+      - in: query
+        name: prefix
+        required: true
+        schema:
+          type: string
+
+#endregion
+#region /collections
+
+  /collections/add:
+    post:
+      # operationId: TODO
+      tags:
+      - collection
+      description: "TODO"
+
+  /collections/remove:
+    post:
+      # operationId: TODO
+      tags:
+      - collection
+      description: "TODO"
+
+  /collections/get:
+    # ?thumbs=0
+    post:
+      # operationId: TODO
+      tags:
+      - collection
+      description: "TODO"
+
+  /collections/edit:
+    post:
+      operationId: editCollection
+      tags:
+      - collection
+      description: "TODO"
+
+  /collections/create:
+    post:
+      operationId: createCollection
+      tags:
+      - collection
+      description: "TODO"
+
+  /collections/delete:
+    post:
+      operationId: deleteCollection
+      tags:
+      - collection
+      description: "TODO"
+
+  /collections/default:
+    post:
+      operationId: setDefaultCollection
+      tags:
+      - collection
+      description: "TODO"
+
+  /collections/move:
+    post:
+      operationId: moveCollection
+      tags:
+      - collection
+      description: "TODO"
+
+  /collections/copy:
+    post:
+      operationId: copyCollection
+      tags:
+      - collection
+      description: "TODO"
+
+  /collections/addCurator:
+    post:
+      operationId: addCurator
+      tags:
+      - collection
+      description: "TODO"
+
+  /collections/curatorAllow:
+    post:
+      # operationId: TODO
+      tags:
+      - collection
+      description: "TODO"
+
+  /collections/curatorAccept:
+    post:
+      # operationId: TODO
+      tags:
+      - collection
+      description: "TODO"
+
+  /collections/curatorIgnore:
+    post:
+      # operationId: TODO
+      tags:
+      - collection
+      description: "TODO"
+
+  /collections/removeCurator:
+    post:
+      operationId: removeCurator
+      tags:
+      - collection
+      description: "TODO"
+
+  /collections/follow:
+    post:
+      operationId: followCollection
+      tags:
+      - collection
+      description: "TODO"
+
+  /collections/unfollow:
+    post:
+      operationId: unfollowCollection
+      tags:
+      - collection
+      description: "TODO"
+
+#endregion
+#region /inbox
+
+  /inbox/post:
+    post:
+      # operationId: TODO
+      tags:
+      - inbox
+      description: "TODO"
+
+  /inbox/conversations:
+    get:
+      # operationId: TODO
+      tags:
+      - inbox
+      description: "TODO"
+
+  /inbox/follows:
+    get:
+      # operationId: TODO
+      tags:
+      - inbox
+      description: "TODO"
+
+  /inbox/notifications:
+    get:
+      # operationId: TODO
+      tags:
+      - inbox
+      description: "TODO"
+
+  /inbox/comments:
+    get:
+      # operationId: TODO
+      tags:
+      - inbox
+      description: "TODO"
+
+  /inbox/all:
+    get:
+      # operationId: TODO
+      tags:
+      - inbox
+      description: "TODO"
+
+  /inbox/pending:
+    get:
+      # operationId: TODO
+      tags:
+      - inbox
+      description: "TODO"
+
+#endregion
+#region /stats
+
+  /stats/user:
+    get:
+      operationId: getUserStats
+      tags:
+      - stats
+      description: "TODO"
+
+#endregion
+#region /tags
+
+  /tags/top:
+    get:
+      operationId: getTopTags
+      tags:
+      - tag
+      description: "TODO"
+
+  /tags/add:
+    post:
+      operationId: addTag
+      tags:
+      - tag
+      description: "TODO"
+
+  /tags/delete:
+    post:
+      operationId: deleteTag
+      tags:
+      - tag
+      description: "TODO"
+
+  /tags/vote:
+    post:
+      operationId: voteTag
+      tags:
+      - tag
+      description: "TODO"
+
+#endregion
+#region /contact
+
+  /contact/reportComment:
+    post:
+      operationId: reportComment
+      tags:
+      - contact
+      description: "TODO"
+
+  /contact/reportItem:
+    post:
+      operationId: reportItem
+      tags:
+      - contact
+      description: "TODO"
+
+  /contact/reportUser:
+    post:
+      operationId: reportUser
+      tags:
+      - contact
+      description: "TODO"
+
+  /contact/report:
+    post:
+      operationId: report
+      tags:
+      - contact
+      description: "TODO"
+
+  /contact/send:
+    post:
+      operationId: sendContactRequest
+      tags:
+      - contact
+      description: "TODO"
+
+#endregion
+#region /bookmarks
+
+  /bookmarks/add:
+    post:
+      operationId: addBookmark
+      tags:
+      - bookmark
+      description: "TODO"
+
+  /bookmarks/delete:
+    post:
+      operationId: deleteBookmark
+      tags:
+      - bookmark
+      description: "TODO"
+
+#endregion
+#region /comments
+
+  /comments/delete:
+    post:
+      operationId: deleteComment
+      tags:
+      - comment
+      description: "TODO"
+
+  /comments/unfav:
+    post:
+      operationId: unfavoriteComment
+      tags:
+      - comment
+      description: "TODO"
+
+  /comments/fav:
+    post:
+      operationId: favoriteComment
+      tags:
+      - comment
+      description: "TODO"
+
+  /comments/vote:
+    post:
+      operationId: voteComment
+      tags:
+      - comment
+      description: "TODO"
+
+  /comments/post:
+    post:
+      operationId: postComment
+      tags:
+      - comment
+      description: "TODO"
+
+  /comments/edit:
+    post:
+      operationId: editComment
+      tags:
+      - comment
+      description: "TODO"
+
+#endregion
+#region Payment
+
+  /coinpayments/getpaymentaddress:
+    post:
+      description: "TODO"
+  /braintree/getclienttoken:
+    post:
+      description: "TODO"
+
+#endregion
+#region /memes
+  # Caution, unstable
+
+  /memes/templates:
+    get:
+      # operationId: TODO
+      tags:
+      - memes
+      description: "TODO"
+
+  /memes/template:
+    get:
+      # operationId: TODO
+      tags:
+      - memes
+      description: "TODO"
+
+  /memes/random:
+    get:
+      # operationId: TODO
+      tags:
+      - memes
+      description: "TODO"
+
+  /memes/delete:
+    post:
+      # operationId: TODO
+      tags:
+      - memes
+      description: "TODO"
+
+  /memes/private:
+    post:
+      # operationId: TODO
+      tags:
+      - memes
+      description: "TODO"
+
+  /memes/change:
+    post:
+      # operationId: TODO
+      tags:
+      - memes
+      description: "TODO"
+
+  /memes/post:
+    post:
+      # operationId: TODO
+      tags:
+      - memes
+      description: "TODO"
+
+#endregion
+#region Ads
+
+  # ../media/app-config.json
+
+  /escobar/cookie:
+    get:
+      description: "TODO"
+
+#endregion
+#region Events (not implemented)
+
+#   /secretsanta/info:
+#     get:
+#       description: "TODO"
+#   /secretsanta/save:
+#     post:
+#       description: "TODO"
+#   /secretsanta/sendMessageToDonator:
+#     post:
+#       description: "TODO"
+#   /secretsanta/sendMessageToReciever:
+#     post:
+#       description: "TODO"
+#   /secretsanta/remove:
+#     post:
+#       description: "TODO"
+
+#   /stocks/chart:
+#     get:
+#       description: "TODO"
+#   /stocks/orderbook:
+#     get:
+#       description: "TODO"
+#   /stocks/trades:
+#     get:
+#       description: "TODO"
+#   /stocks/orders:
+#     get:
+#       description: "TODO"
+#   /stocks/order:
+#     get:
+#       description: "TODO"
+#   /stocks/cancel:
+#     get:
+#       description: "TODO"
+#   /stocks/buy:
+#     get:
+#       description: "TODO"
+#   /stocks/sell:
+#     get:
+#       description: "TODO"
+#   /stocks/deposit:
+#     get:
+#       description: "TODO"
+#   /stocks/withdraw:
+#     get:
+#       description: "TODO"
+#   /stocks/inventory:
+#     get:
+#       description: "TODO"
+#   /stocks/account:
+#     get:
+#       description: "TODO"
+
+#endregion
