@@ -34,6 +34,93 @@ components:
         qt:
           type: integer
 
+    CommentBase:
+      type: object
+      required:
+      - id
+      - up
+      - down
+      - created
+      - content
+      properties:
+        id:
+          type: integer
+          format: int64
+        up:
+          type: integer
+          format: int64
+        down:
+          type: integer
+          format: int64
+        created:
+          type: integer
+          format: int64
+        content:
+          type: string
+
+    ProfileComment:
+      allOf:
+      - $ref: "#/components/schemas/CommentBase"
+      - type: object
+        required:
+        - itemId
+        - thumb
+        properties:
+          itemId:
+            type: integer
+            format: int64
+          thumb:
+            type: string
+
+    LikedProfileComment:
+      allOf:
+      - $ref: "#/components/schemas/ProfileComment"
+      - type: object
+        required:
+        - ccreated
+        - userId
+        - mark
+        - name
+        properties:
+          ccreated:
+            type: number
+          userId:
+            type: integer
+            format: int64
+            description: "Numeric ID of the user that posted that comment"
+          mark:
+            type: number
+            description: "Current user mark of the user that posted that comment"
+          name:
+            type: string
+            description: "Name of the user that posted that comment"
+
+    ProfileUpload:
+      type: object
+      required:
+      - id
+      - thumb
+      properties:
+        id:
+          type: integer
+          format: int64
+        thumb:
+          type: string
+
+    ProfileBadge:
+      type: object
+      properties:
+        link:
+          type: string
+        image:
+          type: string
+        description:
+          type: string
+        created:
+          type: integer
+          format: int64
+
+
 paths:
 #region Login/Auth/Registration/Reset
 
@@ -436,75 +523,21 @@ paths:
                     comments:
                       type: array
                       items:
-                        type: object
-                        properties:
-                          id:
-                            type: number
-                          up:
-                            type: integer
-                            format: int64
-                          down:
-                            type: integer
-                            format: int64
-                          content:
-                            type: string
-                          created:
-                            type: number
-                          itemId:
-                            type: integer
-                            format: int64
-                          thumb:
-                            type: string
+                        $ref: "#/components/schemas/ProfileComment"
                     commentCount:
-                      type: number
+                      type: integer
                     likesArePublic:
                       type: boolean
                     comments_likes:
                       type: array
                       items:
-                        type: object
-                        properties:
-                          id:
-                            type: integer
-                            format: int64
-                          up:
-                            type: integer
-                            format: int64
-                          down:
-                            type: integer
-                            format: int64
-                          content:
-                            type: string
-                          created:
-                            type: number
-                          ccreated:
-                            type: number
-                          itemId:
-                            type: integer
-                            format: int64
-                          thumb:
-                            type: string
-                          userId:
-                            type: integer
-                            format: int64
-                          mark:
-                            type: number
-                          name:
-                            type: string
+                        $ref: "#/components/schemas/LikedProfileComment"
                     commentLikesCount:
                       type: number
                     uploads:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: integer
-                            format: int64
-                          thumb:
-                            type: string
+                      $ref: "#/components/schemas/ProfileUpload"
                     uploadCount:
-                      type: number
+                      type: integer
                     collections:
                       type: array
                       items:
@@ -552,16 +585,7 @@ paths:
                     badges:
                       type: array
                       items:
-                        type: object
-                        properties:
-                          link:
-                            type: string
-                          image:
-                            type: string
-                          description:
-                            type: string
-                          created:
-                            type: number
+                        $ref: "#/components/schemas/ProfileBadge"
                     followCount:
                       type: integer
                       format: int64
