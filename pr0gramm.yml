@@ -325,9 +325,14 @@ components:
     ProfileSuggestionResponse:
       allOf:
       - $ref: "#/components/schemas/ResponseBase"
-      - type: array
-        items:
-          $ref: "#/components/schemas/UserName"
+      - type: object
+        required:
+        - users
+        properties:
+        - users:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserName"
 
     InboxState:
       type:
