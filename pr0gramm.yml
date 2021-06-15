@@ -54,6 +54,17 @@ components:
       type: string
       description: "The user mark"
 
+    NameAndMark:
+      type: object
+      required:
+      - name
+      - mark
+      properties:
+        name:
+          $ref: "#/components/schemas/UserName"
+        mark:
+          $ref: "#/components/schemas/UserMark"
+
     ResponseBase:
       type: object
       required:
@@ -445,6 +456,31 @@ components:
             items:
               type: string
 
+    GetBlockListResponse:
+      allOf:
+      - $ref: "#/components/schemas/ResponseBase"
+      - type: object
+        required:
+        - blockedUsers
+        - log
+        - logLength
+        - score
+        properties:
+          blockedUsers:
+            type: array
+            items:
+    GetBlockListResponse:
+      allOf:
+      - $ref: "#/components/schemas/ResponseBase"
+      - type: object
+        required:
+        - blockedUsers
+        properties:
+          blockedUsers:
+            type: array
+            items:
+              $ref: "#/components/schemas/NameAndMark"
+
 paths:
 #region Login/Auth/Registration/Reset
 
@@ -622,7 +658,17 @@ paths:
 
   /user/blocklist:
     get:
-      summary: "TODO"
+      summary: Gets the blocked users of the logged in user.
+      operationId: getBlocklist
+      tags:
+      - user
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetBlockListResponse"
 
   /user/validateInfo:
     get:
