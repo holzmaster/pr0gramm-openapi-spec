@@ -509,6 +509,89 @@ components:
             items:
               $ref: "#/components/schemas/NameAndMark"
 
+    AccountInfo:
+      type: object
+      required:
+      - likesArePublic
+      - deviceMail
+      - email
+      - invites
+      - isInvited
+      - mark
+      - markDefault
+      - paidUntil
+      properties:
+        likesArePublic:
+          type: boolean
+        deviceMail:
+          type: boolean
+        email:
+          type: string
+        invites:
+          type: integer
+          format: int32
+        isInvited:
+          type: boolean
+        mark:
+          $ref: "#/components/schemas/UserMark"
+        markDefault:
+          $ref: "#/components/schemas/UserMark"
+        paidUntil:
+          $ref: "#/components/schemas/Timestamp"
+
+    InvitedUser:
+      type: object
+      required:
+      - id
+      - mark
+      - name
+      - email
+      - created
+      properties:
+        id:
+          $ref: "#/components/schemas/UserId"
+        mark:
+          $ref: "#/components/schemas/UserMark"
+        name:
+          $ref: "#/components/schemas/UserName"
+        email:
+          type: string
+        created:
+          $ref: "#/components/schemas/Timestamp"
+
+    GetUserInfoResponse:
+      allOf:
+      - $ref: "#/components/schemas/ResponseBase"
+      - type: object
+        required:
+        - account
+        - invited
+        - invitesDetached
+        - payments
+        - subscriptions
+        - curatorCollections
+        properties:
+          account:
+             $ref: "#/components/schemas/AccountInfo"
+          invited:
+            type: array
+            items:
+              $ref: "#/components/schemas/InvitedUser"
+          invitesDetached:
+            type: integer
+            format: int32
+          payments:
+            type: integer
+            format: int32
+          subscriptions:
+            type: array # TODO
+            items:
+              type: object
+          curatorCollections:
+            type: array # TODO
+            items:
+              type: object
+
 paths:
 #region Login/Auth/Registration/Reset
 
@@ -722,7 +805,16 @@ paths:
 
   /user/info:
     get:
-      summary: "TODO"
+      operationId: getUserInfo
+      tags:
+      - user
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetUserInfoResponse"
 
   /user/detachSelf:
     get:
