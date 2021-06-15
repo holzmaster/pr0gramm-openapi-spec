@@ -322,6 +322,13 @@ components:
           blocked:
             type: boolean
 
+    ProfileSuggestionResponse:
+      allOf:
+      - $ref: "#/components/schemas/ResponseBase"
+      - type: array
+        items:
+          $ref: "#/components/schemas/UserName"
+
     InboxState:
       type:
         object
@@ -836,6 +843,13 @@ paths:
         required: true
         schema:
           type: string
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileSuggestionResponse"
 
 #endregion
 #region /collections
