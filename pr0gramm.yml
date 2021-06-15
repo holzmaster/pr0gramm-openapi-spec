@@ -930,49 +930,49 @@ paths:
 
   /inbox/post:
     post:
-      # operationId: TODO
+      operationId: getPostInboxItems
       tags:
       - inbox
       description: "TODO"
 
   /inbox/conversations:
     get:
-      # operationId: TODO
+      operationId: getConversationInboxItems
       tags:
       - inbox
       description: "TODO"
 
   /inbox/follows:
     get:
-      # operationId: TODO
+      operationId: getFollowsInboxItems
       tags:
       - inbox
       description: "TODO"
 
   /inbox/notifications:
     get:
-      # operationId: TODO
+      operationId: getNotificationInboxItems
       tags:
       - inbox
       description: "TODO"
 
   /inbox/comments:
     get:
-      # operationId: TODO
+      operationId: getCommentInboxItems
       tags:
       - inbox
       description: "TODO"
 
   /inbox/all:
     get:
-      # operationId: TODO
+      operationId: getAllInboxItems
       tags:
       - inbox
       description: "TODO"
 
   /inbox/pending:
     get:
-      # operationId: TODO
+      operationId: getPendingInboxItems
       tags:
       - inbox
       description: "TODO"
