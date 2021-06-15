@@ -456,19 +456,47 @@ components:
             items:
               type: string
 
-    GetBlockListResponse:
+    FollowEntry:
+      type: object
+      required:
+      - name
+      - mark
+      - subscribed
+      - followCreated
+      - itemId
+      - thumb
+      - lastPost
+      properties:
+        subscribed:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 1
+        name:
+          $ref: "#/components/schemas/UserName"
+        mark:
+          $ref: "#/components/schemas/UserMark"
+        followCreated:
+          $ref: "#/components/schemas/Timestamp"
+        itemId:
+          $ref: "#/components/schemas/ItemId"
+        thumb:
+          type: string
+        lastPost:
+          $ref: "#/components/schemas/Timestamp"
+
+    GetFollowListResponse:
       allOf:
       - $ref: "#/components/schemas/ResponseBase"
       - type: object
         required:
-        - blockedUsers
-        - log
-        - logLength
-        - score
+        - list
         properties:
-          blockedUsers:
+          list:
             type: array
             items:
+              $ref: "#/components/schemas/FollowEntry"
+
     GetBlockListResponse:
       allOf:
       - $ref: "#/components/schemas/ResponseBase"
@@ -654,7 +682,17 @@ paths:
 
   /user/followlist:
     get:
-      summary: "TODO"
+      summary: Gets the users that the current logged in user is following.
+      operationId: getFollows
+      tags:
+      - user
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetFollowListResponse"
 
   /user/blocklist:
     get:
