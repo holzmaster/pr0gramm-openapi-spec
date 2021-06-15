@@ -42,6 +42,15 @@ components:
       format: int32
       description: "Some item flag in numeric form (1, 2, 4, 8)" # TODO: Enum type?
 
+    Vote:
+      type: integer
+      format: int32
+      description: "Some vote in numeric form (0, -1, 1, 2)"
+
+    Nonce:
+      type: string
+      description: Nonce derived from the cookie. Needed for POST requests.
+
     Score:
       type: integer
       format: int64
@@ -592,6 +601,20 @@ components:
             items:
               type: object
 
+    ItemVoteRequestBody:
+      type: object
+      required:
+      - id
+      - vote
+      - _nonce
+      properties:
+        id:
+          $ref: "#/components/schemas/ItemId"
+        vote:
+          $ref: "#/components/schemas/Vote"
+        _nonce:
+          $ref: "#/components/schemas/Nonce"
+
 paths:
 #region Login/Auth/Registration/Reset
 
@@ -967,7 +990,23 @@ paths:
 
   /items/vote:
     post:
-      description: "TODO"
+      summary: Votes on a post/item.
+      operationId: vote
+      tags:
+      - items
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ItemVoteRequestBody'
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseBase"
 
 #endregion
 #region /profile
