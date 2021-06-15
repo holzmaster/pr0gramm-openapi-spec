@@ -394,6 +394,34 @@ components:
           score:
             $ref: "#/components/schemas/Score"
 
+    PendingInboxItemsResponse:
+      allOf:
+      - $ref: "#/components/schemas/ResponseBase"
+      - type: object
+        required:
+        - messages
+        properties:
+          messages:
+            type: array
+            items:
+              type: object
+
+    TopTagsResponse:
+      allOf:
+      - $ref: "#/components/schemas/ResponseBase"
+      - type: object
+        required:
+        - tags
+        - blacklist
+        properties:
+          tags:
+            type: array
+            items:
+              type: string
+          blacklist:
+            type: array
+            items:
+              type: string
 
 paths:
 #region Login/Auth/Registration/Reset
@@ -996,6 +1024,13 @@ paths:
       tags:
       - tag
       description: "TODO"
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TopTagsResponse"
 
   /tags/add:
     post:
