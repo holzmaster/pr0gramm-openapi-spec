@@ -881,6 +881,10 @@ paths:
 #endregion
 #region /items
 
+  /items/get:
+    get:
+      description: "TODO"
+
   /items/upload:
     post:
       description: "TODO"
