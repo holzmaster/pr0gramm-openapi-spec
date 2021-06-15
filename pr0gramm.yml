@@ -375,6 +375,16 @@ components:
           score:
             $ref: "#/components/schemas/Score"
 
+    LoggedInResponse:
+      allOf:
+      - $ref: "#/components/schemas/ResponseBase"
+      - type: object
+        required:
+        - loggedIn
+        properties:
+          loggedIn:
+            type: boolean
+
     UserIdentifierResponse:
       allOf:
       - $ref: "#/components/schemas/ResponseBase"
@@ -524,6 +534,20 @@ paths:
 
 #endregion
 #region /user
+
+  /user/loggedin:
+    get:
+      summary: Gets the globally unique identifier of the logged in user.
+      operationId: getLoggedInStatus
+      tags:
+      - user
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoggedInResponse"
 
   /user/identifier:
     get:
